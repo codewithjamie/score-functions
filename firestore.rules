@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+    // Leaderboards are public read; only the Cloud Function (Admin SDK) writes.
+    match /leaderboards/{week}/entries/{uid} {
+      allow read: if true;
+      allow write: if false;
+    }
+    // Players may read their own daily progress.
+    match /players/{uid}/daily/{day} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+    // Sessions and audit logs are server-only.
+    match /sessions/{id}   { allow read, write: if false; }
+    match /auditLogs/{id}  { allow read, write: if false; }
+  }
+}

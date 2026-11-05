@@ -1,0 +1,23 @@
+{
+  "name": "score-functions",
+  "private": true,
+  "main": "lib/index.js",
+  "engines": {
+    "node": "20"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "npm run build && node --test lib/*.test.js",
+    "deploy": "firebase deploy --only functions,firestore:rules,firestore:indexes",
+    "test:integration": "npm run build && firebase emulators:exec --only firestore --project demo-test \"node --test lib/*.itest.js\""
+  },
+  "dependencies": {
+    "firebase-admin": "^12.7.0",
+    "firebase-functions": "^6.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "@types/node": "^20.0.0",
+    "firebase-tools": "^13.0.0"
+  }
+}
